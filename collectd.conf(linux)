@@ -1,0 +1,50 @@
+Hostname "localhost"
+FQDNLookup false
+Interval 30
+ReadThreads 1
+
+LoadPlugin logfile
+LoadPlugin memory
+LoadPlugin cpu
+LoadPlugin swap
+LoadPlugin df
+LoadPlugin python
+
+
+<Plugin "logfile">
+  LogLevel "info"
+  File "/var/log/collectd.log"
+  Timestamp true
+</Plugin>
+
+<Plugin cpu>
+        ReportByCpu true
+        #  ReportByState true
+        ValuesPercentage true
+</Plugin>
+
+<Plugin swap>
+        ReportByDevice true
+#       ReportBytes true
+#       ValuesAbsolute true
+        ValuesPercentage true
+</Plugin>
+
+<Plugin "df">
+  IgnoreSelected true
+  MountPoint "/dev"
+  MountPoint "/dev/shm"
+  MountPoint "/proc"
+</Plugin>
+
+<Plugin python>
+        ModulePath "/opt/collectd/etc/Modules/"
+        LogTraces true
+        Interactive false
+        Import CollectdServiceNowPlugin
+	<Module CollectdServiceNowPlugin>
+		MID_WEBSERVER_ADDRESS "some_mid_host.compute-1.amazonaws.com:8097"
+		USERNAME "admin"
+		PASSWORD "put_A_password_here"
+	</Module>
+</Plugin>
